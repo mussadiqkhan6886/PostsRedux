@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addPost } from './postSlicer'
+import { addNewPost } from './postSlicer'
 import { selectAll } from '../user/userSlicer'
+
 
 const AddPost = () => {
     const [title, setTitle] = useState('')
@@ -9,6 +10,9 @@ const AddPost = () => {
     const [userId, setUserId] = useState('')
     const dispatch = useDispatch()
     const users = useSelector(selectAll)
+    const [addRequestStatus, setAddRequestStatus] = useState('idle')
+
+    const canSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle'
 
     const userOptions = () => {
         return users.map((user) => (
@@ -16,16 +20,21 @@ const AddPost = () => {
         ))        
     }
 
-    const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
 
-    const handleAddingPost = (e) => {
-        e.preventDefault()
-        if(title && content){
-            dispatch(addPost(title, content, userId))
-        }
+    const handleAddingPost = () => {
+     if(canSave){
+      try{
+        setAddRequestStatus('pending')
+        dispatch(addNewPost({title, body: content, userId})).unwrap()
         setTitle('')
         setContent('')
         setUserId('')
+      }catch(err){
+        console.log('failed to save the post', err)
+      }finally{
+        setAddRequestStatus('idle')
+      }
+     }
     }
 
   return (
@@ -39,7 +48,7 @@ const AddPost = () => {
             {userOptions()}
         </select>
         <label htmlFor="content">Content: </label>
-        <input type="text" id='content' name='content' value={content} onChange={e => setContent(e.target.value)} />
+        <textarea id='content' name='content' value={content} onChange={e => setContent(e.target.value)} />
         <button onClick={handleAddingPost} disabled={!canSave}>Save Post</button>
       </form>
     </div>
