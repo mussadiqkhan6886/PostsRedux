@@ -27,8 +27,8 @@ const PostsList = () => {
     }
 
     return (
-        <section>
-            <h2>Posts</h2>
+        <section className="text-center">
+            <h2  className="font-bold text-3xl mb-2">Posts</h2>
             {content}
         </section>
     )
