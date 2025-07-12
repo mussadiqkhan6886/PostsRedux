@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { Provider } from 'react-redux'
 import {store} from "./app/Store.js"
-import { fetchUsers } from './features/user/userSlicer.js'
+import { fetchUsers } from './features/user/usersSlice.js'
 
 store.dispatch(fetchUsers())
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Post from './features/Posts/Post'
-import AddPost from './features/Posts/AddPost'
+import Post from './features/Posts/PostsList'
+import AddPost from './features/Posts/AddPostForm'
 
 const App = () => {
   return (
